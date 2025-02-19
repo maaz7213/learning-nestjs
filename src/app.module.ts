@@ -1,25 +1,20 @@
 /* eslint-disable prettier/prettier */
 import { Module } from "@nestjs/common";
-import { TypeOrmModule } from "@nestjs/typeorm";
+// import { TypeOrmModule } from "@nestjs/typeorm";
 import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
 import { BookmarkModule } from "./bookmark/bookmark.module";
-
+import { PrismaModule } from './prisma/prisma.module';
+import { ConfigModule } from '@nestjs/config';
 @Module({
-  imports: [
-    TypeOrmModule.forRoot({
-      type: "postgres",
-      host: "localhost",
-      port: 5433,
-      username: "postgres",
-      password: "khan1234",
-      database: "bookmark",
-      entities: [__dirname + "/**/*.entity{.ts,.js}"], // Adjust the path to match your project structure
-      synchronize: true, // For development only; set to false in production
-    }),
+  imports: [ ConfigModule.forRoot({
+    isGlobal: true,  // Makes config available everywhere
+    envFilePath: '.env', // Path to .env file
+  }),
     AuthModule,
     UserModule,
     BookmarkModule,
+    PrismaModule,
   ],
 })
 export class AppModule {}
